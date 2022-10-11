@@ -1,1 +1,1 @@
-This project expands on shell redirection scripting
+this is a readme
