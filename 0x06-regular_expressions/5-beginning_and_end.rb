@@ -1,7 +1,2 @@
 #!/usr/bin/env ruby
-arg = ARGV[0]
-if ( arg.match /h.n/ )
-  puts "#{arg}"
-else
-  puts ""
-end
+puts ARGV[0].scan(/^h.n$/).join
