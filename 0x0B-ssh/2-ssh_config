@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# This configures the server ssh connection to use key pair and refuse password
+sed -i 's/PasswordAuthentication yes//' /etc/ssh/ssh_config
+ssh-copy-id ubuntu@100.24.244.254 -i ~/.ssh/school
