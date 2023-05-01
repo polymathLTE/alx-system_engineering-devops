@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # installs nginx on a remote server
 # ssh -i ~/.ssh/id_rsa ubuntu@100.24.244.254 "sudo apt install nginx -y"
-apt install nginx -y
+sudo apt-get update -y
+sudo apt-get install -y nginx
 sed -i /etc/nginx/sites-enabled/default '/^.listen/s/\b[0-9]\+\b/80/g'
-ufw allow 'Nginx HTTP'
 touch /var/www/html/index.html
 echo 'Hello World!' | sudo tee /var/www/html/index.html
 
