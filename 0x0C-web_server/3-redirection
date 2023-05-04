@@ -1,20 +1,17 @@
 #!/usr/bin/env bash
 # script to configure nginx to redirect on request to permanently moved page
-SERVER_CONFIG=\
-"server {
-        listen 80 default_server;
-        listen [::]:80 default_server;
-        root /var/www/html;
-        index index.html index.htm index.nginx-debian.html;
-        server_name _;
-        location / {
-                try_files \$uri \$uri/ =404;
-        }
-        if (\$request_filename ~ redirect_me){
-                rewrite ^ https://polymath.me permanent;
-        }
-}"
-echo -e $SERVER_CONFIG | sudo tee /etc/nginx/sites-enabled/default
+
+# 301 - moved permanently config to be added
+SERVER_CONFIG='\n\n\tif (\$request_filename ~ redirect_me){\n\t\trewrite ^ https://polymath.me permanent;\n\t}'
+
+# script to cut of comments and add configuration to server file
+grep -vE '^[[:space:]]*#' /etc/nginx/sites-enabled/default | sed "/location \/ {/,/}/s|}|&$SERVER_CONFIG|" | sudo tee /etc/nginx/sites-enabled/default
+
+# FAILED TRIALS
+# sudo sed -i "0,/location \/ {/,/}/s|}|&$SERVER_CONFIG|" /etc/nginx/sites-enabled/default
+# sed -n '/location \/ {/,/}/p' file
+# sudo sed -i '/^\s*location \/ {$/a'"$SERVER_CONFIG"'' /etc/nginx/sites-enabled/default
+# sudo sed -i 's/^.server_name _/&${SERVER_CONF}/' /etc/nginx/sites-enabled/default
 
 if [ "$(pgrep -c nginx)" -le 0 ]; then
         sudo service nginx start

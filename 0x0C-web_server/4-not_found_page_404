@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# configures nginx to serve a custom http - 404 page
+
+# creates the custom 404 error page and sets permission
+echo "Ceci n'est pas une page" | sudo tee /var/www/html/custom_404.html
+
+# 404 not found config. to be added
+SERVER_CONF='\n\n\terror_page 404 /custom_404.html;\n\tlocation = /custom_404.html {\n\t\troot /var/www/html;\n\t\tinternal;}'
+
+# adds the set configuration to the server file
+sudo sed -i "/location \/ {/,/}/s|}|&$SERVER_CONF|" /etc/nginx/sites-enabled/default
+
+# FAILED TRIALS
+# sudo sed -i "s|^\(\s*\)server_name _|\1$SERVER_CONF|" /etc/nginx/sites-enabled/default
+# sudo sed -i "s|server_name _|&$SERVER_CONF|" /etc/nginx/sites-enabled/default
+
+if [ "$(pgrep -c nginx)" -le 0 ];
+then
+        sudo service nginx start
+else
+        sudo service nginx restart
+fi;
