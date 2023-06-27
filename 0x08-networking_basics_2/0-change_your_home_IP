@@ -1,22 +1,7 @@
 #!/usr/bin/env bash
 # script to config. ubuntu server with specified req.
 
-# config variables
-pattern1='([0-9]{1,3}\.){3}[0-9]{1,3}\slocalhost'
-pattern2='([0-9]{1,3}\.){3}[0-9]{1,3}\sfacebook.com'
-sub1='127.0.0.2\tlocalhost'
-sub2='8.8.8.8\tfacebook.com'
-realfile='/etc/hosts'
-tmpfile="$HOME/hosts.bak"
-
-# configures the host file using sed regex
-cp $realfile "$tmpfile"
-sed -i.bak -r "s|$pattern1|$sub1|" "$tmpfile"
-if grep "facebook.com" "$tmpfile"
-then
-	sed -i.bak -r "s|$pattern2|$sub2|"  "$tmpfile"
-else
-	sed -i.bak -r "7s|$|\n$sub2|" "$tmpfile"
-fi
-sudo cp -f "$tmpfile" $realfile
-
+cp /etc/hosts ~/hosts.new
+echo "127.0.0.2		localhost" > ~/hosts.new
+echo "8.8.8.8		facebook.com" >> ~/hosts.new
+cp -f ~/hosts.new /etc/hosts
