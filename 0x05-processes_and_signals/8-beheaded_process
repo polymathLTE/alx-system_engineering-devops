@@ -1,0 +1,5 @@
+#!/usr/bin/bash
+# this kills the 7-highlander invincible script
+
+pkill -9 7-highlander
+

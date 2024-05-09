@@ -1,0 +1,10 @@
+#!/usr/bin/bash
+# displays "to infinity and beyond" indefinitely
+var=0
+    
+while [ 0 -eq  $var ]
+do
+    echo "to infinity and beyond"
+    sleep 2
+done
+

@@ -1,0 +1,11 @@
+#!/usr/bin/bash
+# displays "to infinity and beyond" indefinitely and block the SIGTERM signal
+var=0
+    
+while [ 0 -eq $var ]
+do
+    echo "to infinity and beyond"
+    sleep 2
+    trap 'echo "I am invincible!!!"' SIGTERM
+done
+

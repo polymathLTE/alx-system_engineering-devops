@@ -1,0 +1,5 @@
+#!/usr/bin/bash
+# kills the infinity script
+
+ps -e | grep 4-to_infinity_a | awk '{print $1}' | xargs kill
+
