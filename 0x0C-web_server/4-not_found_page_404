@@ -5,7 +5,7 @@
 echo "Ceci n'est pas une page" | sudo tee /var/www/html/custom_404.html
 
 # 404 not found config. to be added
-SERVER_CONF='\n\n\terror_page 404 /404.html;\n\tlocation = /custom_404.html {\n\t\troot /var/www/html;\n\t\tinternal;}'
+SERVER_CONF='\n\n\terror_page 404 /custom_404.html;\n\tlocation = /custom_404.html {\n\t\troot /var/www/html;\n\t\tinternal;\n}'
 
 # adds the set configuration to the server file
 sudo sed -i "/location \/ {/,/}/s|}|&$SERVER_CONF|" /etc/nginx/sites-enabled/default
