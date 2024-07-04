@@ -1,3 +1,3 @@
 #!/bin/bash
 # this script retrieves the byte size of a HTTP response
- curl localhost -sI | grep "Content-Length" | awk '{print $2}'
+ curl "$1" -sI | grep "Content-Length" | awk '{print $2}'
