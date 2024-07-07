@@ -21,7 +21,9 @@ then
 #### Result
 I got `bXlwYXNzd29yZDk4OTgh` as the probable password
 
-using `echo "bXlwYXNzd29yZDk4OTgh" | base64 --decode` I got `mypassword9898!` as the password
+using
+```echo "bXlwYXNzd29yZDk4OTgh" | base64 --decode```
+I got `mypassword9898!` as the password
 
 
 ### For task 2 -
