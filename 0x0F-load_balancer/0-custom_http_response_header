@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# script configures nginx servers for serving custom headers
+
+hostname_var=$(hostname)
+
+# defines the custom header and its value
+HEADER_CONF="\n\n\t\tadd_header X-Served-By $hostname_var;\n"
+
+# appends the custom CONFIG
+# sudo sed -i '/location \/ {/a\'"$HEADER_CONF" /etc/nginx/sites-enabled/default
+sudo sed -i "/location \/ {/a\\$HEADER_CONF" /etc/nginx/sites-enabled/default
+
+# test nginx config file
+sudo nginx -t
+
+# start nginx if there are no errors
+if [ $? -eq 0 ] && [ "$(pgrep -c nginx)" -le 0 ];
+then
+        sudo service nginx start
+else
+        sudo service nginx restart
+fi;
+
