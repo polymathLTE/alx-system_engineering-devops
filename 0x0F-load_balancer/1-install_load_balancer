@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# install and configures HAproxy on load balancer server
+
+# installs haproxy
+sudo apt-get -y update
+sudo apt-get install haproxy
+
+echo "ENABLED=1" | sudo tee -a /etc/default/haproxy
+
+# Listen to web1 and web2 servers
+echo -e"
+listen load_balancer
+\tbind *:80
+\tmode http
+balance roundrobin
+\toption httpclose
+\toption forwardfor
+\tserver 184492-web-01 34.207.190.107:80 check
+\tserver 184492-web-02 3.85.196.162:80 check
+" | sudo tee -a /etc/haproxy/haproxy.cfg
+
+service haproxy start

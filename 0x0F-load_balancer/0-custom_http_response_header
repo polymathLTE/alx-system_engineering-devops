@@ -1,20 +1,32 @@
 #!/usr/bin/env bash
 # script configures nginx servers for serving custom headers
 
+# defines the config variables
 hostname_var=$(hostname)
-
-# defines the custom header and its value
 HEADER_CONF="\n\n\t\tadd_header X-Served-By $hostname_var;\n"
+REDIRECT_CONF="\n\n\tif (\$request_filename ~ redirect_me){\n\t\trewrite ^ https://polymath.me permanent;\n\t}"
+NOT_FOUND_CONF='\n\n\terror_page 404 /custom_404.html;\n\tlocation = /custom_404.html {\n\t\troot /var/www/html;\n\t\tinternal;\n\t}'
+
+# install nginx and setup welcome page
+sudo apt-get -y update
+sudo apt-get -y install nginx
+echo "Hello World!" | sudo tee /var/www/html/index.html
+
+# script to cut of comments and add redirect to server file
+grep -vE '^[[:space:]]*#' /etc/nginx/sites-enabled/default | sed "/location \/ {/,/}/s|}|&$REDIRECT_CONF|" | sudo tee /etc/nginx/sites-enabled/default
+
+# creates the custom 404 error page and sets it up
+echo "Ceci n'est pas une page" | sudo tee /var/www/html/custom_404.html
+sudo sed -i "/location \/ {/,/}/s|}|&$NOT_FOUND_CONF|" /etc/nginx/sites-enabled/default
 
 # appends the custom CONFIG
-# sudo sed -i '/location \/ {/a\'"$HEADER_CONF" /etc/nginx/sites-enabled/default
 sudo sed -i "/location \/ {/a\\$HEADER_CONF" /etc/nginx/sites-enabled/default
 
 # test nginx config file
 sudo nginx -t
 
 # start nginx if there are no errors
-if [ $? -eq 0 ] && [ "$(pgrep -c nginx)" -le 0 ];
+if [ "$?" -eq 0 ] && [ "$(pgrep -c nginx)" -le 0 ];
 then
         sudo service nginx start
 else
